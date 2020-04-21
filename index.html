@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Entregas</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Style -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;1,900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* Set the size of the div element that contains the map */
+        #map {
+            height: 500px;
+            /* The height is 500 pixels */
+            width: 700px;
+            /* The width is the width of the web page */
+            border-radius: 25px;
+        }
+
+        .list-group::-webkit-scrollbar {
+            display: none;
+        }
+
+        .btn-primary {
+            background-color: #D50000;
+        }
+
+        h3 {
+            text-align: center
+        }
+
+        i {
+            margin: 0 auto;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-md fixed-top" style="background-color: #D50000;">
+            <a class="navbar-brand text-white" href="#">Entregas APP</a>
+            <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse"
+                data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavId">
+                <ul class="nav">
+                    <li class="nav-item active">
+                        <a class="nav-link text-white" style="cursor: pointer;"
+                            onclick="show('vehiculos')">Vehiculos<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" style="cursor: pointer;" onclick="show('entregas')">Paquetes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" style="cursor: pointer;" onclick="show('personas')">Personas</a>
+                    </li>
+                </ul>
+
+            </div>
+        </nav>
+        <!--Home-->
+        <section class="home container">
+            <div class="row mt-5 p-5">
+                <div class="col">
+                    <!--Poner aqui el mapa-->
+                    <div class="col-lg-6">
+                        <!--Google map-->
+                        <div id="map"></div>
+                    </div>
+                </div>
+                <div id="vehiculos" class="col border border-secondary" style="border-radius: 25px;">
+                    <div class="row p-2 d-block">
+                        <h3>Total vehiculos</h3>
+
+                        <ul class="list-group mb-2 overflow-auto" style="max-height: 370px;" id="listVehiculos">
+
+                        </ul>
+
+                        <button type="button" class="btn btn-secondary btn-lg btn-block" data-toggle="modal"
+                            data-target="#vehiculoModal">Agregar Vehiculo</button>
+                        <!-- Modal vehiculo-->
+                        <div class="modal fade" id="vehiculoModal" tabindex="-1" role="dialog"
+                            aria-labelledby="vehiculoModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="vehiculoModalLabel">Nuevo Vehiculo</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form name="vehiculo">
+                                            <div class="form-group">
+                                                <label for="placa">Placa</label>
+                                                <input type="text" class="form-control" id="placa" placeholder="RRE189">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="descripcionVehiculo">Descripcion</label>
+                                                <input type="text" class="form-control" id="descripcionVehiculo"
+                                                    placeholder="Mazda">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="tipo_vehiculo">Tipo</label>
+                                                <select class="form-control" id="tipo_vehiculo">
+
+                                                </select>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Cerrar</button>
+                                        <button type="button" class="btn btn-primary"
+                                            onclick="writeNewVehiculo()">Guardar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="entregas" class="col border border-secondary" style="border-radius: 25px; display: none;">
+                    <div class="row p-2 d-block">
+                        <h3>Paquetes</h3>
+                        <ul class="list-group mb-2 overflow-auto" style="max-height: 370px;" id="listPaquetes">
+
+                        </ul>
+                        <button type="button" class="btn btn-secondary btn-lg btn-block" data-toggle="modal"
+                            data-target="#paqueteModal">Agregar Paquete</button>
+                        <!-- Modal paquete-->
+                        <div class="modal fade" id="paqueteModal" tabindex="-1" role="dialog"
+                            aria-labelledby="paqueteModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="vehiculoModalLabel">Nuevo Paquete</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form name="paquete">
+                                            <div class="form-group">
+                                                <label for="descripcion_paquete">Descripcion</label>
+                                                <input type="text" class="form-control" id="descripcion_paquete"
+                                                    placeholder="auto marca mazda">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="direccion_entrega">Direccion De Entrega</label>
+                                                <input type="text" class="form-control" id="direccion_entrega"
+                                                    placeholder="crr 30 #50-29">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="estado">Estado</label>
+                                                <select class="form-control" id="estado">
+
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="persona_asignada">Persona Asignada</label>
+                                                <select class="form-control" id="persona_asignada">
+
+                                                </select>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Cerrar</button>
+                                        <button type="button" class="btn btn-primary"
+                                            onclick="writeNewPaquete()">Guardar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="personas" class="col border border-secondary" style="border-radius: 25px; display: none;">
+                    <div class="row p-2 d-block">
+                        <h3>Personas</h3>
+                        <ul class="list-group mb-2 overflow-auto" style="max-height: 370px;" id="listPersonas">
+
+                        </ul>
+                        <button type="button" class="btn btn-secondary btn-lg btn-block" data-toggle="modal"
+                            data-target="#personaModal">Agregar Persona</button>
+                        <!-- Modal Persona-->
+                        <div class="modal fade" id="personaModal" tabindex="-1" role="dialog"
+                            aria-labelledby="personaModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="personaModalLabel">Nueva Persona</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form name="persona">
+
+                                            <div class="form-group">
+                                                <label for="cedula">Cedula</label>
+                                                <input type="text" class="form-control" id="cedula"
+                                                    placeholder="192304234">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="nombre_persona">Nombre</label>
+                                                <input type="text" class="form-control" id="nombre"
+                                                    placeholder="Andres">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="contraseña">Contraseña</label>
+                                                <input type="text" class="form-control" id="password" placeholder="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="vehiculo_asignado">Vehiculo Asignado</label>
+                                                <select class="form-control" id="vehiculo_asignado">
+
+                                                </select>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Cerrar</button>
+                                        <button type="button" class="btn btn-primary"
+                                            onclick="writeNewPersona()">Guardar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </div>
+
+
+
+    </script>
+    <!-- Replace following script src -->
+    <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+    </script>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-database.js"></script>
+    <script src="https://kit.fontawesome.com/ac473ca7ad.js" crossorigin="anonymous"></script>
+
+    <script src="/javascript/main.js"></script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+        </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+        </script>
+
+    <!--Load the API from the specified URL
+            * The async attribute allows the browser to render the page while the API loads
+            * The key parameter will contain your own API key (which is not needed for this tutorial)
+            * The callback parameter executes the initMap() function
+            -->
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXncff8YzYT8pInsSN6L9X2RQQuJtEcW8&callback=initMap">
+        </script>
+</body>
+
+</html>
